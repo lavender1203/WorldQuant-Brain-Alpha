@@ -19,6 +19,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+venv
 
 # PyInstaller
 *.manifest
@@ -39,3 +40,6 @@ mac/build/
 # Windows
 dist/
 build/
+
+# Log
+*.log
