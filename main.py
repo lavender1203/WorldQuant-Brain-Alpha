@@ -46,49 +46,33 @@ def main():
     try:
         print("🚀 启动 WorldQuant Brain 批量 Alpha 生成系统")
 
-        print("\n📋 请选择运行模式:")
-        print("1: 自动模式 (测试并自动提交 2 个合格 Alpha)")
-        print("2: 仅测试模式 (测试并保存合格 Alpha ID)")
-        print("3: 仅提交模式 (提交已保存的合格 Alpha ID)")
-
-        mode = int(input("\n请选择模式 (1-3): "))
-        if mode not in [1, 2, 3]:
-            print("❌ 无效的模式选择")
-            return
+        # 固定模式为 2（仅测试模式）
+        mode = 2
+        print(f"🚀 选择的模式: {mode}")
 
         brain = BrainBatchAlpha()
 
         if mode in [1, 2]:
-            print("\n📊 可用数据集列表:")
-            for dataset in get_dataset_list():
-                print(dataset)
-
-            dataset_index = input("\n请选择数据集编号: ")
-            dataset_name = get_dataset_by_index(dataset_index)
-            if not dataset_name:
-                print("❌ 无效的数据集编号")
+            print("\n📊 遍历所有可用数据集:")
+            datasets = get_dataset_list()
+            if not datasets:
+                print("❌ 没有可用的数据集")
                 return
 
-            print("\n📈 可用策略模式:")
-            print("1: 基础策略模式")
-            print("2: 多因子组合模式")
+            for index, _ in enumerate(datasets):
+                dataset_name = get_dataset_by_index(index)
+                if not dataset_name:
+                    print(f"❌ 无效的数据集索引: {index}")
+                    continue
+                print(f"\n📋 当前数据集: {dataset_name}")
 
-            strategy_mode = int(input("\n请选择策略模式 (1-2): "))
-            if strategy_mode not in [1, 2]:
-                print("❌ 无效的策略模式")
-                return
+                print("\n📈 遍历所有策略模式:")
+                for strategy_mode in [1, 2]:
+                    print(f"🔄 当前策略模式: {strategy_mode}")
 
-            results = brain.simulate_alphas(None, strategy_mode, dataset_name)
-
-            if mode == 1:
-                submit_alpha_ids(brain, 2)
-
-        elif mode == 3:
-            num_to_submit = int(input("\n请输入要提交的 Alpha 数量: "))
-            if num_to_submit <= 0:
-                print("❌ 无效的提交数量")
-                return
-            submit_alpha_ids(brain, num_to_submit)
+                    # 模拟 Alphas
+                    results = brain.simulate_alphas(None, strategy_mode, dataset_name)
+                    print(f"✅ 数据集 {dataset_name} 策略模式 {strategy_mode} 模拟完成，共生成 {len(results)} 个结果")
 
     except Exception as e:
         print(f"❌ 程序运行出错: {str(e)}")

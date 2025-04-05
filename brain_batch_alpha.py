@@ -139,7 +139,7 @@ class BrainBatchAlpha:
             return None
 
 
-    def simulate_alphas(self, datafields=None, strategy_mode=1, dataset_name=None, max_workers=3):
+    def simulate_alphas(self, datafields=None, strategy_mode=1, dataset_name=None, max_workers=1):
        """并行模拟多个 Alpha 表达式"""
 
        try:
